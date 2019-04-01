@@ -1,38 +1,28 @@
 package nwt.tim14.microservices.document.Entities;
 
 
+import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
+import java.util.UUID;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
+@Table(name = "document_contents")
 public class DocumentContent {
-
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(nullable = false)
-    private Long contentID;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    private UUID id;
 
-    @Lob
-    @Column(columnDefinition = "BLOB")
+
     private byte[] content;
-
-
-    public Long getContentID() {
-        return contentID;
-    }
-
-    public void setContentID(Long contentID) {
-        this.contentID = contentID;
-    }
-
-    public byte[] getContent() {
-        return content;
-    }
-
-    public void setContent(byte[] content) {
-        this.content = content;
-    }
-
-    public DocumentContent(byte[] _content) {
-        this.content = _content;
-    }
 }

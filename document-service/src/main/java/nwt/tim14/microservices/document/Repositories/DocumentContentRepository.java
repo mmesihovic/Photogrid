@@ -4,7 +4,9 @@ import nwt.tim14.microservices.document.Entities.DocumentContent;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface DocumentContentRepository extends CrudRepository<DocumentContent, Long> {
+import java.util.UUID;
+
+
+public interface DocumentContentRepository extends CrudRepository<DocumentContent, UUID> {
 
 }
