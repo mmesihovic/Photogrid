@@ -1,6 +1,7 @@
 package nwt.tim14.microservices.user.Entities;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Role {
@@ -26,6 +27,14 @@ public class Role {
     public void setName(String name) {
         this.name = name;
     }
+
+    @ManyToMany
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id" , referencedColumnName = "id")
+    )
+    public Set<User> users;
 
     public Role(String name) {
         this.name = name;

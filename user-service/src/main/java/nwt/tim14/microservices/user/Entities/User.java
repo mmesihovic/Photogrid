@@ -2,8 +2,10 @@ package nwt.tim14.microservices.user.Entities;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
@@ -24,6 +26,22 @@ public class User {
     private String password;
     @Column
     private Boolean enabled;
+
+    @OneToMany(mappedBy = "follower")
+    public Set<Follow> follower;
+
+    @OneToMany(mappedBy = "followed")
+    public Set<Follow> followed;
+
+    @ManyToMany
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName =  "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+    )
+    public Set<Role> roles;
+
+    public User() {}
 
     public User(String firstName, String lastName, Date birthDate, String username, String email, String password, Boolean enabled) {
         this.firstName = firstName;
