@@ -34,7 +34,7 @@ public class FollowController  {
         followRepository.delete(id);
     }
 
-    @RequestMapping(value = "roles/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "follows/{id}", method = RequestMethod.PUT)
     @ResponseBody
     public Follow updateRole(@PathVariable Long id, @RequestBody Follow follow) {
         Follow newFollow = followRepository.findOne(id);

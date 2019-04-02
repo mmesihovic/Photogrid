@@ -1,6 +1,8 @@
 package nwt.tim14.microservices.user.Entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.Set;
 
@@ -12,18 +14,31 @@ public class User {
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(nullable = false)
     private Long id;
+
     @Column
+    @NotNull
+    @Size(min = 5, max = 20)
     private String firstName;
+
     @Column
+    @NotNull
+    @Size(min = 5, max = 20)
     private String lastName;
+
     @Column
     private Date birthDate;
-    @Column
+
+    @Column(unique = true)
     private String username;
-    @Column
+
+    @Column(unique = true)
     private String email;
+
     @Column
+    @NotNull
+    @Size(min = 8)
     private String password;
+
     @Column
     private Boolean enabled;
 
