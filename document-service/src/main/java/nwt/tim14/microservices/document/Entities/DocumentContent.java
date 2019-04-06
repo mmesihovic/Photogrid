@@ -21,8 +21,9 @@ public class DocumentContent {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
+    @org.hibernate.annotations.Type(type="org.hibernate.type.PostgresUUIDType")
     private UUID id;
 
-
+    @Column(nullable = false)
     private byte[] content;
 }

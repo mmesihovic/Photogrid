@@ -1,6 +1,7 @@
 package nwt.tim14.microservices.user.Entities;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class Follow {
@@ -9,14 +10,22 @@ public class Follow {
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(nullable = false)
     private Long id;
-    @Column
-    private Long followerID;
-    @Column
-    private Long followedID;
 
-    public Follow(Long followerID, Long followedID) {
-        this.followerID = followerID;
-        this.followedID = followedID;
+    @ManyToOne
+    @JoinColumn(name="follower_id")
+    private User follower;
+
+    @ManyToOne
+    @JoinColumn(name="followed_id")
+    private User followed;
+
+    @Column
+    public Date date;
+
+    public Follow(User follower, User followed, Date date) {
+        this.follower = follower;
+        this.followed = followed;
+        this.date = date;
     }
 
     public Long getId() {
@@ -27,19 +36,19 @@ public class Follow {
         this.id = id;
     }
 
-    public Long getFollowerID() {
-        return followerID;
+    public User getFollowerID() {
+        return follower;
     }
 
-    public void setFollowerID(Long followerID) {
-        this.followerID = followerID;
+    public void setFollowerID(User follower) {
+        this.follower = follower;
     }
 
-    public Long getFollowedID() {
-        return followedID;
+    public User getFollowedID() {
+        return followed;
     }
 
-    public void setFollowedID(Long followedID) {
-        this.followedID = followedID;
+    public void setFollowedID(User followed) {
+        this.followed = followed;
     }
 }

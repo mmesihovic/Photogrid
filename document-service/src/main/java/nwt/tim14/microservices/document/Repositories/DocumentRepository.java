@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 public interface DocumentRepository extends CrudRepository<Document, UUID> {
+
 }

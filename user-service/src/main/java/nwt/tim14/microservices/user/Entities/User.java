@@ -1,29 +1,62 @@
 package nwt.tim14.microservices.user.Entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(nullable = false)
     private Long id;
+
     @Column
+    @NotNull
+    @Size(min = 5, max = 20)
     private String firstName;
+
     @Column
+    @NotNull
+    @Size(min = 5, max = 20)
     private String lastName;
+
     @Column
     private Date birthDate;
-    @Column
+
+    @Column(unique = true)
     private String username;
-    @Column
+
+    @Column(unique = true)
     private String email;
+
     @Column
+    @NotNull
+    @Size(min = 8)
     private String password;
+
     @Column
     private Boolean enabled;
+
+    @OneToMany(mappedBy = "follower")
+    public Set<Follow> follower;
+
+    @OneToMany(mappedBy = "followed")
+    public Set<Follow> followed;
+
+    @ManyToMany
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName =  "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+    )
+    public Set<Role> roles;
+
+    public User() {}
 
     public User(String firstName, String lastName, Date birthDate, String username, String email, String password, Boolean enabled) {
         this.firstName = firstName;

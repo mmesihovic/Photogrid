@@ -24,17 +24,24 @@ public class Document {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
+    @org.hibernate.annotations.Type(type="org.hibernate.type.PostgresUUIDType")
     private UUID id;
+
+    @Column(length = 50, nullable = false)
     private String name;
+
+    @Column(length = 5)
     private String extension;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "content_id")
     private DocumentContent content;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp
     private Date createdAt;
+
+    @Column(length = 30, nullable = false)
     private String mimeType;
 
 }
