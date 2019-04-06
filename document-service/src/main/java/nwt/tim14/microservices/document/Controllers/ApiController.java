@@ -5,12 +5,13 @@ import nwt.tim14.microservices.document.Entities.DocumentContent;
 import nwt.tim14.microservices.document.Repositories.DocumentContentRepository;
 import nwt.tim14.microservices.document.Repositories.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/document")
 public class ApiController {
 
     @Autowired
@@ -37,5 +38,13 @@ public class ApiController {
 
         documentRepository.save(doc);
     }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Document Get(@PathVariable UUID id, final HttpServletResponse response) {
+        return null;
+    }
+
+
 }
 
