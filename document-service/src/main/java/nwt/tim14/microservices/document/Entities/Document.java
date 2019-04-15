@@ -41,7 +41,7 @@ public class Document {
     @CreationTimestamp
     private Date createdAt;
 
-    @Column(length = 30, nullable = false)
+    @Column(length = 100, nullable = false)
     private String mimeType;
 
 }

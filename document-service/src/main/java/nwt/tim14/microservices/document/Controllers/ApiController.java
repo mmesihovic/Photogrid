@@ -52,6 +52,7 @@ public class ApiController {
 
             if (document == null) {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                return;
             }
 
             response.addHeader("Content-Disposition",
@@ -80,21 +81,20 @@ public class ApiController {
     public DocumentDTO createDocument(@RequestParam("file") MultipartFile document, final HttpServletResponse response) {
         try {
             DocumentContent dc = DocumentContent.builder()
-                    .id(UUID.randomUUID())
                     .content(document.getBytes())
                     .build();
 
             String originalName = document.getOriginalFilename();
             var extIndex = originalName.lastIndexOf('.');
+
+            documentContentRepository.save(dc);
+
             Document d = Document.builder()
-                    .id(UUID.randomUUID())
                     .content(dc)
                     .name(extIndex != -1? originalName.substring(0, extIndex) : originalName)
                     .extension(extIndex != -1? originalName.substring(extIndex): null)
                     .mimeType(document.getContentType())
                     .build();
-
-            documentContentRepository.save(dc);
             documentRepository.save(d);
 
             return DocumentDTO.getFromDocument(d);
