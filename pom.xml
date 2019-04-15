@@ -26,6 +26,7 @@
 		<module>user-service</module>
 		<module>interaction-service</module>
 		<module>document-service</module>
-	</modules>
+        <module>discovery-service</module>
+    </modules>
 
 </project>
