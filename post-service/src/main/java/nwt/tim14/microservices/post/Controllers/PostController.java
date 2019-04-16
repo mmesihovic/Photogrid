@@ -26,19 +26,19 @@ public class PostController {
     @RequestMapping(value = "/posts/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Post getPostById(@PathVariable Long id) {
-        return postRepository.findById(id).orElse(null);
+        return postRepository.findOne(id);
     }
 
     @RequestMapping(value = "/posts/{id}", method = RequestMethod.DELETE)
     public void deletePost(@PathVariable Long id) {
-        postRepository.deleteById(id);
+        postRepository.delete(id);
     }
 
     @RequestMapping(value = "/posts/{id}", method = RequestMethod.PUT)
     @ResponseBody
     public Post updatePost(@PathVariable Long id, @RequestBody Post post) {
 
-        Post newPost = postRepository.findById(id).orElse(null);
+        Post newPost = postRepository.findOne(id);
 
         newPost.setDecription(post.getDecription());
         newPost.setComments(post.getComments());

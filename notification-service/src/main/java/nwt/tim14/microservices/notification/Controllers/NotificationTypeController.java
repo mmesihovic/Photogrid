@@ -25,19 +25,19 @@ public class NotificationTypeController {
     @RequestMapping(value = "/notifications/types/{id}", method = RequestMethod.GET)
     @ResponseBody
     public NotificationType getNotificationTypesById(@PathVariable Long id) {
-        return notificationTypeRepository.findById(id).orElse(null);
+        return notificationTypeRepository.findOne(id);
     }
 
     @RequestMapping(value = "/notifications/types/{id}", method = RequestMethod.DELETE)
     public void deleteNotificationType(@PathVariable Long id) {
-        notificationTypeRepository.deleteById(id);
+        notificationTypeRepository.delete(id);
     }
 
     @RequestMapping(value = "/notifications/types/{id}", method = RequestMethod.PUT)
     @ResponseBody
     public NotificationType updateNotificationType(@PathVariable Long id, @RequestBody NotificationType notificationType) {
 
-        NotificationType newNotificationType = notificationTypeRepository.findById(id).orElse(null);
+        NotificationType newNotificationType = notificationTypeRepository.findOne(id);
 
         newNotificationType.setType(notificationType.getType());
 

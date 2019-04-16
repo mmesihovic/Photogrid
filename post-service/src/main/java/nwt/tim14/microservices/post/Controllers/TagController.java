@@ -26,18 +26,18 @@ public class TagController {
     @RequestMapping(value = "/posts/tags/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Tag getTagById(@PathVariable Long id) {
-        return tagRepository.findById(id).orElse(null);
+        return tagRepository.findOne(id);
     }
 
     @RequestMapping(value = "/posts/tags/{id}", method = RequestMethod.DELETE)
     public void deleteTag(@PathVariable Long id) {
-        tagRepository.deleteById(id);
+        tagRepository.delete(id);
     }
 
     @RequestMapping(value ="/posts/tags/{id}", method = RequestMethod.PUT)
     @ResponseBody
     public Tag updateTag(@PathVariable Long id, @RequestBody Tag tag) {
-        Tag newTag = tagRepository.findById(id).orElse(null);
+        Tag newTag = tagRepository.findOne(id);
         newTag.setName(tag.getName());
         tagRepository.save(newTag);
         return newTag;

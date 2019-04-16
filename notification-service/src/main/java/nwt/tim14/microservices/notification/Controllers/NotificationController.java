@@ -25,19 +25,19 @@ public class NotificationController {
     @RequestMapping(value = "/notifications/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Notification getNotificationById(@PathVariable Long id) {
-        return notificationRepository.findById(id).orElse(null);
+        return notificationRepository.findOne(id);
     }
 
     @RequestMapping(value = "/notifications/{id}", method = RequestMethod.DELETE)
     public void deleteNotification(@PathVariable Long id) {
-        notificationRepository.deleteById(id);
+        notificationRepository.delete(id);
     }
 
     @RequestMapping(value = "/notifications/{id}", method = RequestMethod.PUT)
     @ResponseBody
     public Notification updateNotification(@PathVariable Long id, @RequestBody Notification notification) {
 
-        Notification newNotification = notificationRepository.findById(id).orElse(null);
+        Notification newNotification = notificationRepository.findOne(id);
 
         newNotification.setType(notification.getType());
         newNotification.setContent(notification.getContent());

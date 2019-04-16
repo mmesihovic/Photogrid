@@ -24,19 +24,19 @@ public class ReactionController {
     @RequestMapping(value = "/interactions/reactions/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Reaction getReactionById(@PathVariable Long id) {
-        return reactionRepository.findById(id).orElse(null);
+        return reactionRepository.findOne(id);
     }
 
     @RequestMapping(value = "/interactions/reactions/{id}", method = RequestMethod.DELETE)
     public void deleteReactionById(@PathVariable Long id) {
-        reactionRepository.deleteById(id);
+        reactionRepository.delete(id);
     }
 
     @RequestMapping(value = "/interactions/reactions/{id}", method = RequestMethod.PUT)
     @ResponseBody
     public Reaction updateReaction(@PathVariable Long id, @RequestBody Reaction reaction) {
 
-        Reaction newReaction = reactionRepository.findById(id).orElse(null);
+        Reaction newReaction = reactionRepository.findOne(id);
 
         newReaction.setType(reaction.getType());
         newReaction.setComments(reaction.getComments());

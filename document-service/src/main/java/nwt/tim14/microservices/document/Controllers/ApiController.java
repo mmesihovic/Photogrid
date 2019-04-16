@@ -5,6 +5,7 @@ import nwt.tim14.microservices.document.Entities.Document;
 import nwt.tim14.microservices.document.Entities.DocumentContent;
 import nwt.tim14.microservices.document.Repositories.DocumentContentRepository;
 import nwt.tim14.microservices.document.Repositories.DocumentRepository;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.util.StreamUtils;
@@ -104,6 +105,9 @@ public class ApiController {
         }
     }
 
-
+    @RabbitListener(queues = "testQueue")
+    public void receive(String message) {
+        System.out.println(message);
+    }
 }
 

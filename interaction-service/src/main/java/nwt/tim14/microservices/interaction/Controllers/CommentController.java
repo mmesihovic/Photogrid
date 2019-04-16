@@ -25,19 +25,19 @@ public class CommentController {
     @RequestMapping(value = "/interactions/comments/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Comment getCommentById(@RequestParam Long id) {
-        return commentRepository.findById(id).orElse(null);
+        return commentRepository.findOne(id);
     }
 
     @RequestMapping(value = "/interactions/comments/{id}", method = RequestMethod.DELETE)
     public void deleteCommentById(@RequestParam Long id) {
-        commentRepository.deleteById(id);
+        commentRepository.delete(id);
     }
 
     @RequestMapping(value = "/interactions/comments/{id}", method = RequestMethod.PUT)
     @ResponseBody
     public Comment updatePostById(@RequestParam Long id, @RequestBody Comment comment) {
 
-        Comment newComment = commentRepository.findById(id).orElse(null);
+        Comment newComment = commentRepository.findOne(id);
 
         newComment.setPost(comment.getPost());
         newComment.setContent(comment.getContent());

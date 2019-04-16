@@ -3,6 +3,8 @@ package nwt.tim14.microservices.user.Controllers;
 import nwt.tim14.microservices.user.Entities.User;
 import nwt.tim14.microservices.user.Repositories.RoleRepository;
 import nwt.tim14.microservices.user.Repositories.UserRepository;
+import org.springframework.amqp.core.Exchange;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -24,11 +26,27 @@ public class UserController  {
         return new RestTemplate(clientHttpRequestFactory);
     }
 
+    private final RabbitTemplate rabbitTemplate;
+
+    private final Exchange exchange;
     @Autowired
     private RestTemplate restTemplate;
 
     @Autowired
     private UserRepository userRepository;
+
+    public UserController(RabbitTemplate rabbitTemplate, Exchange exchange) {
+        this.rabbitTemplate = rabbitTemplate;
+        this.exchange = exchange;
+    }
+
+    @RequestMapping(value = "/testmq", method = RequestMethod.GET)
+    public void testmq() {
+        // ... do some database stuff
+        String routingKey = "test.test";
+        String message = "test";
+        rabbitTemplate.convertAndSend(exchange.getName(), routingKey, message);
+    }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     @ResponseBody
