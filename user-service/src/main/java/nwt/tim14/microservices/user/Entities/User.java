@@ -42,10 +42,10 @@ public class User {
     @Column
     private Boolean enabled;
 
-    @OneToMany(mappedBy = "follower")
+    @OneToMany(mappedBy = "followerID")
     public Set<Follow> follower;
 
-    @OneToMany(mappedBy = "followed")
+    @OneToMany(mappedBy = "followedID")
     public Set<Follow> followed;
 
     @ManyToMany

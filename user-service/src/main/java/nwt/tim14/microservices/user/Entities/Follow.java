@@ -1,9 +1,12 @@
 package nwt.tim14.microservices.user.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Follow {
 
     @Id
@@ -11,20 +14,22 @@ public class Follow {
     @Column(nullable = false)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="follower_id")
-    private User follower;
+    private User followerID;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="followed_id")
-    private User followed;
+    private User followedID;
 
     @Column
     public Date date;
 
-    public Follow(User follower, User followed, Date date) {
-        this.follower = follower;
-        this.followed = followed;
+    public Follow() {}
+
+    public Follow( User follower, User followed, Date date) {
+        this.followerID = follower;
+        this.followedID = followed;
         this.date = date;
     }
 
@@ -37,18 +42,18 @@ public class Follow {
     }
 
     public User getFollowerID() {
-        return follower;
+        return followerID;
     }
 
     public void setFollowerID(User follower) {
-        this.follower = follower;
+        this.followerID = follower;
     }
 
     public User getFollowedID() {
-        return followed;
+        return followedID;
     }
 
     public void setFollowedID(User followed) {
-        this.followed = followed;
+        this.followedID = followed;
     }
 }

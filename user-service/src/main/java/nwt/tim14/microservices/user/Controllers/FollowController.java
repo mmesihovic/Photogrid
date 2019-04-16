@@ -20,6 +20,8 @@ public class FollowController  {
 
     @RequestMapping(value = "/follows", method = RequestMethod.POST)
     public void insertFollow(@RequestBody Follow follow) {
+        System.out.println(follow.getFollowerID());
+
         followRepository.save(follow);
     }
 
