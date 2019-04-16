@@ -64,6 +64,26 @@ public class ApiController {
         }
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public void deleteDocument(@PathVariable UUID id, final HttpServletResponse response) {
+
+        try {
+            Document document = documentRepository.findOne(id);
+
+            if (document == null) {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+
+            documentContentRepository.delete(document.getContent().getId());
+            documentRepository.delete(document.getId());
+
+        } catch (Exception ex) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
     public List<DocumentDTO> getAllDocuments(final HttpServletResponse response) {
