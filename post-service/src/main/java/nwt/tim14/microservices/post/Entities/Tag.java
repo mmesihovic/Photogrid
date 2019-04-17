@@ -1,5 +1,6 @@
 package nwt.tim14.microservices.post.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -30,6 +31,7 @@ public class Tag {
     private String name;
 
     @ManyToMany
+    @JsonIgnore
     @JoinTable(
             name = "posts_tags",
             joinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"),
