@@ -2,6 +2,8 @@ package nwt.tim14.microservices.post.Controllers;
 
 import nwt.tim14.microservices.post.Entities.Post;
 import nwt.tim14.microservices.post.Repositories.IPostRepository;
+import org.springframework.amqp.core.Exchange;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
@@ -30,6 +32,23 @@ public class PostController {
 
     @Autowired
     private IPostRepository postRepository;
+
+    /*private final RabbitTemplate rabbitTemplate;
+
+    private final Exchange exchange;
+
+    public PostController(RabbitTemplate rabbitTemplate, Exchange exchange) {
+        this.rabbitTemplate = rabbitTemplate;
+        this.exchange = exchange;
+    }
+
+    @RequestMapping(value = "/testmq", method = RequestMethod.GET)
+    public void testmq() {
+        // ... do some database stuff
+        String routingKey = "test.test";
+        String message = "test";
+        rabbitTemplate.convertAndSend(exchange.getName(), routingKey, message);
+    }*/
 
     @RequestMapping(value = "/posts", method = RequestMethod.GET)
     @ResponseBody

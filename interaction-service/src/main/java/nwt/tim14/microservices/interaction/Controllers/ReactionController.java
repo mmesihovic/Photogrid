@@ -2,6 +2,8 @@ package nwt.tim14.microservices.interaction.Controllers;
 
 import nwt.tim14.microservices.interaction.Entities.Reaction;
 import nwt.tim14.microservices.interaction.Repositories.IReactionRepository;
+import org.springframework.amqp.core.Exchange;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -29,6 +31,23 @@ public class ReactionController {
 
     @Autowired
     private IReactionRepository reactionRepository;
+
+    /*private final RabbitTemplate rabbitTemplate;
+
+    private final Exchange exchange;
+
+    public ReactionController(RabbitTemplate rabbitTemplate, Exchange exchange) {
+        this.rabbitTemplate = rabbitTemplate;
+        this.exchange = exchange;
+    }
+
+    @RequestMapping(value = "/testmq", method = RequestMethod.GET)
+    public void testmq() {
+        // ... do some database stuff
+        String routingKey = "test.test";
+        String message = "test";
+        rabbitTemplate.convertAndSend(exchange.getName(), routingKey, message);
+    }*/
 
     @RequestMapping(value = "/interactions/reactions", method = RequestMethod.GET)
     public Iterable<Reaction> getAllReactions() {

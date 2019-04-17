@@ -2,6 +2,8 @@ package nwt.tim14.microservices.interaction.Controllers;
 
 import nwt.tim14.microservices.interaction.Entities.Comment;
 import nwt.tim14.microservices.interaction.Repositories.ICommentRepository;
+import org.springframework.amqp.core.Exchange;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -29,6 +31,28 @@ public class CommentController {
 
     @Autowired
     private ICommentRepository commentRepository;
+
+   /* private final RabbitTemplate rabbitTemplate;
+
+    private final Exchange exchange;
+
+    public CommentController(RabbitTemplate rabbitTemplate, Exchange exchange) {
+        this.rabbitTemplate = rabbitTemplate;
+        this.exchange = exchange;
+    }
+
+    public CommentController() {
+        this.rabbitTemplate = null;
+        this.exchange = null;
+    }
+
+    @RequestMapping(value = "/testmq", method = RequestMethod.GET)
+    public void testmq() {
+        // ... do some database stuff
+        String routingKey = "test.test";
+        String message = "test";
+        rabbitTemplate.convertAndSend(exchange.getName(), routingKey, message);
+    }*/
 
     @RequestMapping(value = "/interactions/comments", method = RequestMethod.GET)
     @ResponseBody
