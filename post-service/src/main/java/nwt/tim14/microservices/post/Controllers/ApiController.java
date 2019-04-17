@@ -41,8 +41,6 @@ public class ApiController {
 
         Post post = Post.builder()
                 .decription("Neki description")
-                .comments(20L)
-                .reactions(20L)
                 .userID(3524L)
                 .tags(tags)
                 .build();

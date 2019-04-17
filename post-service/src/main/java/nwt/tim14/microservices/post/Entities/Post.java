@@ -32,8 +32,6 @@ public class Post {
     private Date createdAt;
     @Size(min=0, max=350)
     private String decription;
-    private Long reactions;
-    private Long comments;
 
     @Column
     @NotNull

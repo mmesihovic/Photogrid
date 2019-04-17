@@ -41,8 +41,6 @@ public class PostController {
         Post newPost = postRepository.findOne(id);
 
         newPost.setDecription(post.getDecription());
-        newPost.setComments(post.getComments());
-        newPost.setReactions(post.getReactions());
         newPost.setTags(post.getTags());
         newPost.setUserID(post.getUserID());
 
