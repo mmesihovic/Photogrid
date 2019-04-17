@@ -3,6 +3,8 @@ package nwt.tim14.microservices.interaction.Entities;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -39,6 +41,7 @@ public class Comment {
     private Long reactions;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "postID", nullable = false)
     private Post post;
 

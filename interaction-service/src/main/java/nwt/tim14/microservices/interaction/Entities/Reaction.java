@@ -1,5 +1,6 @@
 package nwt.tim14.microservices.interaction.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,9 +22,14 @@ public class Reaction {
 
     @Column
     @NotNull
-    private String type;
+    private Long userID;
+
+    @ManyToOne
+    @JoinColumn(name="typeID", nullable=false)
+    private ReactionType type;
 
     @ManyToMany
+    @JsonIgnore
     @JoinTable(
             name = "comments_reactions",
             joinColumns = @JoinColumn(name = "reaction_id", referencedColumnName = "id"),
@@ -32,8 +38,9 @@ public class Reaction {
     private List<Comment> comments;
 
     @ManyToMany
+    @JsonIgnore
     @JoinTable(
-            name = "posts_reactionss",
+            name = "posts_reactions",
             joinColumns = @JoinColumn(name = "reaction_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id")
     )
