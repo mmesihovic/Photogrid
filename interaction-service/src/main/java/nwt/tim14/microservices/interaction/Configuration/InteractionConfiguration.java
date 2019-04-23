@@ -9,37 +9,23 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class InteractionConfiguration {
-    /*@Bean
+    @Bean
     public Exchange eventExchange() {
-        return new TopicExchange("eventExchange");
+        return new TopicExchange("photogrid-exchange");
+    }
+
+
+    @Bean
+    public Queue notificationQueue() {
+        return new Queue("notificationQueue");
     }
 
     @Bean
-    public CommentController commentController(RabbitTemplate rabbitTemplate, Exchange eventExchange) {
-        return new CommentController(rabbitTemplate, eventExchange);
-    };
-
-    @Bean
-    public ReactionController reactionController(RabbitTemplate rabbitTemplate, Exchange eventExchange) {
-        return new ReactionController(rabbitTemplate, eventExchange);
-    };
-
-    @Bean
-    public Queue queue() {
-        return new Queue("testQueue");
-    }
-
-    @Bean
-    public Binding binding(Queue queue, TopicExchange eventExchange) {
+    public Binding binding(Queue queue, Exchange eventExchange) {
         return BindingBuilder
                 .bind(queue)
-                .to(eventExchange)
-                .with("test.*");
+                .to((TopicExchange)eventExchange)
+                .with("notification.*");
     }
-
-    @Bean
-    public CommentController commentController() {
-        return new CommentController();
-    }*/
 
 }

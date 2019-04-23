@@ -9,12 +9,12 @@ import org.springframework.context.annotation.Configuration;
 public class DocumentConfiguration {
     @Bean
     public TopicExchange eventExchange() {
-        return new TopicExchange("eventExchange");
+        return new TopicExchange("photogrid-exchange");
     }
 
     @Bean
     public Queue queue() {
-        return new Queue("testQueue");
+        return new Queue("documentQueue");
     }
 
     @Bean
@@ -22,11 +22,7 @@ public class DocumentConfiguration {
         return BindingBuilder
                 .bind(queue)
                 .to(eventExchange)
-                .with("test.*");
+                .with("document.*");
     }
 
-    @Bean
-    public ApiController apiController() {
-        return new ApiController();
-    }
 }

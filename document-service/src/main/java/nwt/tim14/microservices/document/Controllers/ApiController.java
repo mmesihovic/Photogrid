@@ -125,7 +125,7 @@ public class ApiController {
         }
     }
 
-    @RabbitListener(queues = "testQueue")
+    @RabbitListener(queues = "documentQueue")
     public void receive(String message) {
         System.out.println(message);
     }

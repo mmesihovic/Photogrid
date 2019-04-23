@@ -1,5 +1,6 @@
 package nwt.tim14.microservices.interaction.Controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import nwt.tim14.microservices.interaction.Entities.Comment;
 import nwt.tim14.microservices.interaction.Repositories.ICommentRepository;
 import org.springframework.amqp.core.Exchange;
@@ -32,27 +33,20 @@ public class CommentController {
     @Autowired
     private ICommentRepository commentRepository;
 
-   /* private final RabbitTemplate rabbitTemplate;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
-    private final Exchange exchange;
+    @Autowired
+    private Exchange exchange;
 
-    public CommentController(RabbitTemplate rabbitTemplate, Exchange exchange) {
-        this.rabbitTemplate = rabbitTemplate;
-        this.exchange = exchange;
-    }
-
-    public CommentController() {
-        this.rabbitTemplate = null;
-        this.exchange = null;
-    }
 
     @RequestMapping(value = "/testmq", method = RequestMethod.GET)
     public void testmq() {
         // ... do some database stuff
-        String routingKey = "test.test";
-        String message = "test";
+        String routingKey = "notification.document";
+        String message = "{ \"message\": \"newcomment123!\"}";
         rabbitTemplate.convertAndSend(exchange.getName(), routingKey, message);
-    }*/
+    }
 
     @RequestMapping(value = "/interactions/comments", method = RequestMethod.GET)
     @ResponseBody
@@ -70,6 +64,11 @@ public class CommentController {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 response.getWriter().write("User sa navedenim ID-om ne postoji.");
                 response.getWriter().flush();
+
+                ObjectMapper mapper = new ObjectMapper();
+                String routingKey = "notification.document.create";
+                String message = mapper.writeValueAsString(comment);
+                rabbitTemplate.convertAndSend(exchange.getName(), routingKey, message);
                 return;
             }
             catch (Exception e) {

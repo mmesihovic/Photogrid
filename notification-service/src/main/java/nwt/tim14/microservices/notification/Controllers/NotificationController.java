@@ -2,7 +2,10 @@ package nwt.tim14.microservices.notification.Controllers;
 
 import nwt.tim14.microservices.notification.Entities.Notification;
 import nwt.tim14.microservices.notification.Repositories.INotificationRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Exchange;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,22 +16,19 @@ public class NotificationController {
     @Autowired
     private INotificationRepository notificationRepository;
 
-   /* private final RabbitTemplate rabbitTemplate;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
-    private final Exchange exchange;
+    @Autowired
+    private Exchange exchange;
 
-    public NotificationController(RabbitTemplate rabbitTemplate, Exchange exchange) {
-        this.rabbitTemplate = rabbitTemplate;
-        this.exchange = exchange;
+    private Logger logger = LoggerFactory.getLogger(NotificationController.class);
+
+    @RabbitListener(queues="notificationQueue")
+    public void receive(String message) {
+        //TODO primljena notifikacija, prosilijediti je klijentu
+        logger.info("Received message '{}'", message);
     }
-
-    @RequestMapping(value = "/testmq", method = RequestMethod.GET)
-    public void testmq() {
-        // ... do some database stuff
-        String routingKey = "test.test";
-        String message = "test";
-        rabbitTemplate.convertAndSend(exchange.getName(), routingKey, message);
-    }*/
 
     @RequestMapping(value = "/notifications", method = RequestMethod.GET)
     @ResponseBody

@@ -1,5 +1,6 @@
 package nwt.tim14.microservices.user.Controllers;
 
+import com.netflix.discovery.converters.Auto;
 import nwt.tim14.microservices.user.Entities.User;
 import nwt.tim14.microservices.user.Repositories.RoleRepository;
 import nwt.tim14.microservices.user.Repositories.UserRepository;
@@ -26,19 +27,17 @@ public class UserController  {
         return new RestTemplate(clientHttpRequestFactory);
     }
 
-    private final RabbitTemplate rabbitTemplate;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
-    private final Exchange exchange;
+    @Autowired
+    private Exchange exchange;
+
     @Autowired
     private RestTemplate restTemplate;
 
     @Autowired
     private UserRepository userRepository;
-
-    public UserController(RabbitTemplate rabbitTemplate, Exchange exchange) {
-        this.rabbitTemplate = rabbitTemplate;
-        this.exchange = exchange;
-    }
 
     @RequestMapping(value = "/testmq", method = RequestMethod.GET)
     public void testmq() {
