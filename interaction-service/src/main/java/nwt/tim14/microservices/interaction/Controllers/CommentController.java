@@ -1,5 +1,6 @@
 package nwt.tim14.microservices.interaction.Controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nwt.tim14.microservices.interaction.Entities.Comment;
 import nwt.tim14.microservices.interaction.Repositories.ICommentRepository;
@@ -57,6 +58,16 @@ public class CommentController {
     @RequestMapping(value = "/interactions/comments", method = RequestMethod.POST)
     @ResponseBody
     public void addComment(@RequestBody Comment comment, final HttpServletResponse response) {
+        ObjectMapper mapper = new ObjectMapper();
+        String routingKey = "notification.*";
+        String message = null;
+        try {
+            message = mapper.writeValueAsString(comment);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        rabbitTemplate.convertAndSend(exchange.getName(), routingKey, message);
+
         String url = "http://user-service/users/5";
         Object[] userServiceResponse = restTemplate1.getForObject(url, Object[].class);
         if (userServiceResponse == null) {
@@ -65,11 +76,7 @@ public class CommentController {
                 response.getWriter().write("User sa navedenim ID-om ne postoji.");
                 response.getWriter().flush();
 
-                ObjectMapper mapper = new ObjectMapper();
-                String routingKey = "notification.document.create";
-                String message = mapper.writeValueAsString(comment);
-                rabbitTemplate.convertAndSend(exchange.getName(), routingKey, message);
-                return;
+;
             }
             catch (Exception e) {
                 // Who Cares
