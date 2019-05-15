@@ -1,0 +1,63 @@
+version: '3'
+
+services:
+  discoveryservice:
+    build: ./discovery-service
+    image: discovery:latest
+    ports:
+      - "8085:8085"
+    networks:
+      - network
+  userservice:
+    build: ./user-service
+    image: user:latest
+    links:
+      - discoveryservice
+      - userdb
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/user-service
+      - SPRING_APPLICATION_NAME=user-service
+    networks:
+      - network
+  userdb:
+    image: postgres:9.6
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASS=postgres
+      - POSTGRES_DB=user-service
+    networks:
+      - network
+#  postservice:
+#    build: ./post-service
+#    image: post:latest
+#    ports:
+#      - "8081:8081"
+#    links:
+#      - discoveryservice
+#    networks:
+#      - network
+#  notificationservice:
+#    build: ./notification-service
+#    image: notification:latest
+#    ports:
+#      - "8082:8082"
+#    links:
+#      - discoveryservice
+#    networks:
+#      - network
+#  interactionservice:
+#    build: ./interaction-service
+#    image: interaction:latest
+#    ports:
+#      - "8083:8083"
+#    links:
+#      - discoveryservice
+#    networks:
+#      - network
+
+
+networks:
+  network:
+    driver: bridge
