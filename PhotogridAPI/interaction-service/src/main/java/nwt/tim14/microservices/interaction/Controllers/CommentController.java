@@ -2,7 +2,10 @@ package nwt.tim14.microservices.interaction.Controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import nwt.tim14.microservices.interaction.DTOs.CommentDTO;
+import nwt.tim14.microservices.interaction.DTOs.NotificationDTO;
 import nwt.tim14.microservices.interaction.Entities.Comment;
+import nwt.tim14.microservices.interaction.Entities.Post;
 import nwt.tim14.microservices.interaction.Repositories.ICommentRepository;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -62,27 +65,28 @@ public class CommentController {
         String routingKey = "notification.*";
         String message = null;
         try {
-            message = mapper.writeValueAsString(comment);
+            //String url = "http://user-service/users/5";
+            //Object[] userServiceResponse = restTemplate1.getForObject(url, Object[].class);
+
+            Comment newComment = Comment.builder()
+                    .content(comment.getContent())
+                    .post(comment.getPost())
+                    .userID(comment.getUserID())
+                    .build();
+            commentRepository.save(newComment);
+
+            NotificationDTO notification = NotificationDTO.builder()
+                    .type("NEWCOMMENT")
+                    .postId(comment.getPost().getId())
+                    .userId(comment.getUserID())
+                    .build();
+            message = mapper.writeValueAsString(notification);
+
+            rabbitTemplate.convertAndSend(exchange.getName(), routingKey, message);
+
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        rabbitTemplate.convertAndSend(exchange.getName(), routingKey, message);
-
-        String url = "http://user-service/users/5";
-        Object[] userServiceResponse = restTemplate1.getForObject(url, Object[].class);
-        if (userServiceResponse == null) {
-            try {
-                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                response.getWriter().write("User sa navedenim ID-om ne postoji.");
-                response.getWriter().flush();
-
-;
-            }
-            catch (Exception e) {
-                // Who Cares
-            }
-        }
-        commentRepository.save(comment);
     }
 
     @RequestMapping(value = "/interactions/comments/{id}", method = RequestMethod.GET)
