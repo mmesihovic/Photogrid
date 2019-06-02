@@ -29,7 +29,8 @@
         <module>discovery-service</module>
 		<module>post-service</module>
 		<module>notification-service</module>
+        <module>auth-service</module>
 		<module>api-gateway</module>
-    </modules>
+	</modules>
 
 </project>
