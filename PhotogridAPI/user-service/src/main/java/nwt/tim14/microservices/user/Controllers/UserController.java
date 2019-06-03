@@ -1,6 +1,6 @@
 package nwt.tim14.microservices.user.Controllers;
 
-import com.netflix.discovery.converters.Auto;
+
 import nwt.tim14.microservices.user.Entities.User;
 import nwt.tim14.microservices.user.Repositories.RoleRepository;
 import nwt.tim14.microservices.user.Repositories.UserRepository;
