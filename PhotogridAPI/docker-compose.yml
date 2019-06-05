@@ -1,34 +1,215 @@
-version: '3'
+version: '2'
 
 services:
-  discoveryservice:
-    build: ./discovery-service
-    image: discovery:latest
+  eureka:
+    container_name: eurekaa
+    image: eureka
+    expose:
+      - 8761
     ports:
-      - "8085:8085"
+      - 8761:8761
     networks:
-      - network
-  userservice:
-    build: ./user-service
-    image: user:latest
+      - app-network
+  user-service:
+    container_name: userss
+    image: users
+    expose:
+      - 8084
+    ports:
+      - 8084:8084
     links:
-      - discoveryservice
-      - userdb
-    ports:
-      - "8080:8080"
+      - dbusers:dbusers
+      - eureka
+    depends_on:
+      - dbusers
+      - eureka
+    mem_limit: 200m
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/user-service
-      - SPRING_APPLICATION_NAME=user-service
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
     networks:
-      - network
-  userdb:
-    image: postgres:9.6
+      - app-network
+  dbusers:
+    container_name: usersdb
+    image: postgres:9.5
+    volumes:
+      - usersdb:/var/lib/postgresql/data
     environment:
+      - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
-      - POSTGRES_PASS=postgres
-      - POSTGRES_DB=user-service
+      - POSTGRES_DB=users
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+      - 9022:5432
     networks:
-      - network
+      - app-network
+  post-service:
+    container_name: postss
+    image: posts
+    expose:
+      - 8082
+    ports:
+      - 8082:8082
+    links:
+      - dbposts:dbposts
+      - eureka
+    depends_on:
+      - dbposts
+      - eureka
+    mem_limit: 200m
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+    networks:
+      - app-network
+  dbposts:
+    container_name: postsdb
+    image: postgres:9.5
+    volumes:
+      - postsdb:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=posts
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+      - 9023:5432
+    networks:
+      - app-network
+  interaction-service:
+    container_name: interactionss
+    image: interactions
+    expose:
+      - 8085
+    ports:
+      - 8085:8085
+    links:
+      - dbinteractions:dbinteractions
+      - eureka
+    depends_on:
+      - dbinteractions
+      - eureka
+    mem_limit: 200m
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+    networks:
+      - app-network
+  dbinteractions:
+    container_name: interactionsdb
+    image: postgres:9.5
+    volumes:
+      - interactionsdb:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=interactions
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+      - 9024:5432
+    networks:
+      - app-network
+  dbdocuments:
+    container_name: documentsdb
+    image: postgres:9.5
+    volumes:
+      - documentsdb:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=documents
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+      - 9025:5432
+    networks:
+      - app-network
+  document-service:
+    container_name: documentss
+    image: documents
+    expose:
+      - 8090
+    ports:
+      - 8090:8090
+    links:
+      - dbdocuments:dbdocuments
+      - eureka
+    depends_on:
+      - dbdocuments
+      - eureka
+    mem_limit: 200m
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+    networks:
+      - app-network
+  notification-service:
+    container_name: notificationss
+    image: notifications
+    expose:
+      - 8083
+    ports:
+      - 8083:8083
+    links:
+      - dbnotifications:dbnotifications
+      - eureka
+    depends_on:
+      - dbnotifications
+      - eureka
+    mem_limit: 200m
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+    networks:
+      - app-network
+  dbnotifications:
+    container_name: notificationsdb
+    image: postgres:9.5
+    volumes:
+      - notificationsdb:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=notifications
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+      - 9026:5432
+    networks:
+      - app-network
+  gateway:
+    container_name: zuul
+    image: zuul
+    links:
+      - eureka
+    depends_on:
+      - eureka
+    mem_limit: 200m
+    expose:
+      - 8762
+    ports:
+      - 8762:8762
+    environment:
+#      - SPRING_APPLICATION_NAME =APIGateway
+#      - SPRING_PROFILES_ACTIVE=enableEureka
+#      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+    networks:
+      - app-network
+#  userservice:
+#    build: ./user-service
+#    image: user:latest
+#    links:
+#      - discoveryservice
+#      - userdb
+#    ports:
+#      - "8080:8080"
+#    environment:
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/user-service
+#      - SPRING_APPLICATION_NAME=user-service
+#    networks:
+#      - network
+#  userdb:
+#    image: postgres:9.6
+#    environment:
+#      - POSTGRES_USER=postgres
+#      - POSTGRES_PASS=postgres
+#      - POSTGRES_DB=user-service
+#    networks:
+#      - network
 #  postservice:
 #    build: ./post-service
 #    image: post:latest
@@ -58,6 +239,13 @@ services:
 #      - network
 
 
+volumes:
+  usersdb: {}
+  postsdb: {}
+  documentsdb: {}
+  interactionsdb: {}
+  notificationsdb: {}
+
 networks:
-  network:
+  app-network:
     driver: bridge

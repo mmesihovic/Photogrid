@@ -1,10 +1,11 @@
-nwt\tim14\microservices\document\Entities\Document$DocumentBuilder.class
-nwt\tim14\microservices\document\Entities\Document.class
 nwt\tim14\microservices\document\Controllers\ApiController.class
-nwt\tim14\microservices\document\DocumentApplication.class
-nwt\tim14\microservices\document\Repositories\DocumentContentRepository.class
 nwt\tim14\microservices\document\DTOs\DocumentDTO.class
 nwt\tim14\microservices\document\Entities\DocumentContent$DocumentContentBuilder.class
 nwt\tim14\microservices\document\Entities\DocumentContent.class
 nwt\tim14\microservices\document\Configuration\DocumentConfiguration.class
+nwt\tim14\microservices\document\Entities\Document$DocumentBuilder.class
+nwt\tim14\microservices\document\Entities\Document.class
+nwt\tim14\microservices\document\DocumentApplication.class
+nwt\tim14\microservices\document\Repositories\DocumentContentRepository.class
+nwt\tim14\microservices\document\Configuration\SecurityConfiguration.class
 nwt\tim14\microservices\document\Repositories\DocumentRepository.class
