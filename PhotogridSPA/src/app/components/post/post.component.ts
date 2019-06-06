@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
 })
 
 export class PostComponent {
-
+  username = 'mmesihovic';
+  content = 'http://www.canyontours.com/wp-content/uploads/2014/10/grand-canyon-west-rim-colorado-river.jpg';
 }
