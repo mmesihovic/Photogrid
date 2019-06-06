@@ -1,0 +1,16 @@
+<navbar-component></navbar-component>
+<div class="col-md-12" tyle="padding-bottom:10px;">
+    <div class="col-md-12">
+        <div class="form-group row">
+            <div class="col-sm-3">
+              <label for="description" class="col-form-label">Username: </label>
+            </div>
+            <div class="col-sm-9">
+              <textarea id="description" class="form-control" formControlName="description" placeholder="Description"></textarea>
+            </div>
+          </div>
+    </div>
+    <span style="color:red;" *ngIf="message">{{message}}</span>
+    <input #file type="file" accept='image/*' (change)="preview(file.files)" />
+    <img [src]="imgURL" height="200" *ngIf="imgURL">
+</div>
