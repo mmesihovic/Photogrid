@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-//import { UserService } from './services/user.service';
 import { User } from './models/user';
 
 @Component({
@@ -8,20 +7,19 @@ import { User } from './models/user';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent /*implements OnInit*/ {
+export class AppComponent implements OnInit {
   title = 'Photogrid';
   currentUser : User;
 
-  /*constructor(
-    //private userService : UserService,
+  constructor(
     private router : Router
   ) {
-    this.currentUser = null;
+    this.currentUser;
   };
 
   ngOnInit() {
-    if(this.currentUser == null) {
+    /*if(this.currentUser == null) {
       this.router.navigate(['/login']);
-    }
-  }*/
+    }*/
+  }
 }
