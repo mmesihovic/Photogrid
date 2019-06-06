@@ -1,0 +1,11 @@
+<navbar-component></navbar-component>
+<div class="col-md-12" style="margin-top:15px; margin-bottom:15px">
+  <user-details-component></user-details-component>
+</div>
+<div class="col-md-12">
+    <div style="display:flex; flex-wrap: wrap;">
+      <div *ngFor="let item of postLinks" style="flex:30%; max-width:30%; padding: 15px;">
+        <img style="margin-top:10px; vertical-align: middle; width: 100%; " src="{{item}}">
+      </div>
+    </div>
+</div>
