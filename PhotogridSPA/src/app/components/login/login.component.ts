@@ -23,7 +23,7 @@ export class LoginComponent {
   private login() {
       if(!this.loginForm.valid)
         return;
-        this.userService.login(this.loginForm.get('username').value, this.loginForm.get('password').value)
+        //this.userService.login(this.loginForm.get('username').value, this.loginForm.get('password').value)
   }
 
   private createForm() {
