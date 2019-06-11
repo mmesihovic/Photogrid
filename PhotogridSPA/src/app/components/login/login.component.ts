@@ -20,16 +20,16 @@ export class LoginComponent {
     this.createForm();
   }
 
-  private login() {
-      if(!this.loginForm.valid)
-        return;
-        //this.userService.login(this.loginForm.get('username').value, this.loginForm.get('password').value)
-  }
-
   private createForm() {
     this.loginForm = this.fb.group({
       username: ['', Validators.compose([Validators.required])],
       password: ['', Validators.compose([Validators.required])]
     });
   }
+
+  login() {
+    if(!this.loginForm.valid)
+      return;
+      this.userService.login(this.loginForm.get('username').value, this.loginForm.get('password').value)
+}
 }

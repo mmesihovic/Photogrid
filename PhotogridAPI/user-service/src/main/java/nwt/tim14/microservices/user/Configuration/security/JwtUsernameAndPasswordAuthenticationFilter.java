@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import nwt.tim14.microservices.common.JwtConfig;
+import nwt.tim14.microservices.user.DTOs.LoginResponse;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -78,6 +79,18 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 
         // Add token to header
         response.addHeader(jwtConfig.getHeader(), jwtConfig.getPrefix() + token);
+
+        LoginResponse responseBody = LoginResponse.builder()
+                .token(token)
+                .username(auth.getName())
+                .expires_in(now + jwtConfig.getExpiration() * 1000)
+                .build();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        response.getWriter().write(objectMapper.writeValueAsString(responseBody));
+        response.getWriter().flush();
+        response.getWriter().close();
     }
 
     // A (temporary) class just to represent the user credentials

@@ -1,9 +1,11 @@
 package nwt.tim14.microservices.user.Controllers;
 
 
+import nwt.tim14.microservices.user.DTOs.UserResponse;
 import nwt.tim14.microservices.user.Entities.User;
 import nwt.tim14.microservices.user.Repositories.RoleRepository;
 import nwt.tim14.microservices.user.Repositories.UserRepository;
+import org.aspectj.weaver.reflect.ArgNameFinder;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +14,11 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletResponse;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class UserController  {
@@ -57,6 +61,28 @@ public class UserController  {
     public void insertUser(@RequestBody User user) {
         System.out.print(user);
         userRepository.save(user);
+    }
+
+    @RequestMapping(value = "/users/username/{username}", method = RequestMethod.GET)
+    @ResponseBody
+    public UserResponse getUserByUsername(@PathVariable String username, final HttpServletResponse response) {
+        try {
+            User user = userRepository.findByUsername(username)
+                    .orElseThrow(() -> { throw new IllegalArgumentException("User not found"); });
+
+            return UserResponse.builder()
+                    .firstName(user.getFirstName())
+                    .lastName(user.getLastName())
+                    .id(user.getId())
+                    .roles(user.roles.stream().map(ur -> ur.getName()).collect(Collectors.toList()))
+                    .username(user.getUsername())
+                    .email(user.getEmail())
+                    .build();
+
+        } catch (IllegalArgumentException ex) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return null;
+        }
     }
 
     @RequestMapping(value = "users/{id}", method = RequestMethod.GET)
