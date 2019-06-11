@@ -21,7 +21,7 @@ export class UserService {
 
   public login(username: string, password: string) : Observable<User> {
     return this.http.post<LoginResponse>(
-      environment.apiUrl + "/users/auth",
+      "http://localhost:8762/api/users/auth",
       {
         username: username,
         password: password
@@ -30,7 +30,7 @@ export class UserService {
       mergeMap(ur => {
         localStorage["token"] = ur.token;
         localStorage["token_expiration"] = ur.expires_in;
-        return this.http.get<User>(environment.apiUrl + "/users/users/username/" + ur.username);
+        return this.http.get<User>("http://localhost:8762/api/users/users/username/" + ur.username);
       }
       )
     );

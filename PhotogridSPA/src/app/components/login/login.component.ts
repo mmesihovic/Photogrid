@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators} from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'login-component',
@@ -11,6 +12,8 @@ import { UserService } from 'src/app/services/user.service';
 export class LoginComponent {
 
   loginForm : FormGroup;
+
+  @Output() loggedIn: EventEmitter<User> = new EventEmitter<User>();
 
   constructor(
     private fb : FormBuilder,
@@ -28,8 +31,12 @@ export class LoginComponent {
   }
 
   login() {
+    
     if(!this.loginForm.valid)
       return;
       this.userService.login(this.loginForm.get('username').value, this.loginForm.get('password').value)
-}
+        .subscribe(u => {
+         this.loggedIn.emit(u);
+        });
+  }
 }
