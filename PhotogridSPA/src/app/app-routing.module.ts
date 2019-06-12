@@ -12,10 +12,10 @@ const routes: Routes = [
   { path: '', component: DashboardComponent, canActivate: [AuthGuardService] },
   {path: 'login', component : LoginComponent},
   {path: 'registration', component: RegistrationComponent},
-  {path: 'dashboard', component: DashboardComponent},
-  {path: 'newPost', component: NewPostComponent},
-  {path: ':username', component: ProfileComponent},
-  {path: 'post/:id', component: PostComponent},
+  {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService]},
+  {path: 'newPost', component: NewPostComponent, canActivate: [AuthGuardService]},
+  {path: ':username', component: ProfileComponent, canActivate: [AuthGuardService]},
+  {path: 'post/:id', component: PostComponent, canActivate: [AuthGuardService]},
   { path: '**', redirectTo: '' }
 ];
 @NgModule({

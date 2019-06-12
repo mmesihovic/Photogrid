@@ -1,7 +1,9 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div class="col-md-7" style="margin: 15px auto 0 auto;">
   <div style="width: 100%; margin: 0 0 0 auto;">
-    <router-outlet></router-outlet>
+    <router-outlet *ngIf="isAuthenticated"></router-outlet>
+    <login-component *ngIf="!isAuthenticated" (loggedIn)="userLoggedIn($event)"></login-component>
+   
   </div>
 </div>
 

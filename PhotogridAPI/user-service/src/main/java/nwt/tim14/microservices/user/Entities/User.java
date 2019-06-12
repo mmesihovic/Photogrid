@@ -48,7 +48,7 @@ public class User {
     @OneToMany(mappedBy = "followedID")
     public Set<Follow> followed;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName =  "id"),
